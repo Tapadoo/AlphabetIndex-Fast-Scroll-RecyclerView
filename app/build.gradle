@@ -9,7 +9,7 @@ android {
     compileSdkVersion 33
 
     defaultConfig {
-        applicationId "in.myinnos.indexfastscrollrecycler"
+        applicationId "myinnos.indexfastscrollrecycler"
         minSdkVersion 15
         targetSdkVersion 33
         versionCode 1

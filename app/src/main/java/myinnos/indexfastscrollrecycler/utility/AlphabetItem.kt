@@ -1,4 +1,4 @@
-package `in`.myinnos.indexfastscrollrecycler.utility
+package myinnos.indexfastscrollrecycler.utility
 
 /**
  * Created by MyInnos on 01-02-2017.

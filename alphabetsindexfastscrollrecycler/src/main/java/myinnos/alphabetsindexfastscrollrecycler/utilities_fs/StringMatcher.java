@@ -1,4 +1,4 @@
-package in.myinnos.alphabetsindexfastscrollrecycler.utilities_fs;
+package myinnos.alphabetsindexfastscrollrecycler.utilities_fs;
 
 /**
  * Created by MyInnos on 31-01-2017.

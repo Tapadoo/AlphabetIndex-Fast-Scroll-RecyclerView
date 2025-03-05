@@ -1,7 +1,7 @@
-package `in`.myinnos.indexfastscrollrecycler.adapter
+package myinnos.indexfastscrollrecycler.adapter
 
-import `in`.myinnos.indexfastscrollrecycler.Helpers.Companion.sectionsHelper
-import `in`.myinnos.indexfastscrollrecycler.R
+import myinnos.indexfastscrollrecycler.Helpers.Companion.sectionsHelper
+import myinnos.indexfastscrollrecycler.R
 import android.widget.SectionIndexer
 import android.view.ViewGroup
 import android.view.LayoutInflater
@@ -11,6 +11,7 @@ import android.widget.ImageButton
 import androidx.recyclerview.widget.RecyclerView
 import java.util.*
 import kotlin.collections.ArrayList
+import kotlin.text.iterator
 
 /**
  * Created by MyInnos on 01-02-2017.

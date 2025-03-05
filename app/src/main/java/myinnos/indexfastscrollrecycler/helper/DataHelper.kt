@@ -1,4 +1,4 @@
-package `in`.myinnos.indexfastscrollrecycler.helper
+package myinnos.indexfastscrollrecycler.helper
 
 import java.util.ArrayList
 

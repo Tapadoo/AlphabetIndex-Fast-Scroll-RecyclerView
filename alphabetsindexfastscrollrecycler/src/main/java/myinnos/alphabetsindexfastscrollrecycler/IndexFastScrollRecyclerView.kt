@@ -1,4 +1,4 @@
-package `in`.myinnos.alphabetsindexfastscrollrecycler
+package myinnos.alphabetsindexfastscrollrecycler
 
 
 import android.annotation.SuppressLint

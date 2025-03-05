@@ -36,7 +36,7 @@ How to use
 -----
 **Step 1:** add this to your xml:
 ```xml
-<in.myinnos.alphabetsindexfastscrollrecycler.IndexFastScrollRecyclerView
+<myinnos.alphabetsindexfastscrollrecycler.IndexFastScrollRecyclerView
     android:id="@+id/fast_scroller_recycler"
     android:layout_width="match_parent"
     android:layout_height="match_parent" />

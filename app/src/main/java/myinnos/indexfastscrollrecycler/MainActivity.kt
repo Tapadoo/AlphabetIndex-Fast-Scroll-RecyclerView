@@ -1,10 +1,10 @@
-package `in`.myinnos.indexfastscrollrecycler
+package myinnos.indexfastscrollrecycler
 
 
-import `in`.myinnos.alphabetsindexfastscrollrecycler.IndexFastScrollRecyclerView
-import `in`.myinnos.indexfastscrollrecycler.adapter.RecyclerViewAdapter
-import `in`.myinnos.indexfastscrollrecycler.helper.DataHelper
-import `in`.myinnos.indexfastscrollrecycler.utility.AlphabetItem
+import myinnos.alphabetsindexfastscrollrecycler.IndexFastScrollRecyclerView
+import myinnos.indexfastscrollrecycler.adapter.RecyclerViewAdapter
+import myinnos.indexfastscrollrecycler.helper.DataHelper
+import myinnos.indexfastscrollrecycler.utility.AlphabetItem
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
