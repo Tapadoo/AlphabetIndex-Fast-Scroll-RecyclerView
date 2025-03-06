@@ -19,7 +19,8 @@ import androidx.recyclerview.widget.RecyclerView
 /*
  * Created by MyInnos on 31-01-2017.
  * Updated by AbandonedCart 07-2022.
- */   class IndexFastScrollRecyclerView : RecyclerView {
+ */
+class IndexFastScrollRecyclerView : RecyclerView {
     private var mScroller: IndexFastScrollRecyclerSection? = null
     private var mGestureDetector: GestureDetector? = null
     private var mEnabled = true

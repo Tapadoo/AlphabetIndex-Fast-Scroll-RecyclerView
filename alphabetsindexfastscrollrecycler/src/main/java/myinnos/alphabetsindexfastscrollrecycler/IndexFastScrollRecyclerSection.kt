@@ -1,21 +1,25 @@
 package myinnos.alphabetsindexfastscrollrecycler
 
 import android.content.Context
-import android.graphics.*
+import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.Paint
+import android.graphics.RectF
+import android.graphics.Typeface
 import android.util.Log
-import android.widget.SectionIndexer
 import android.view.MotionEvent
+import android.widget.SectionIndexer
 import androidx.annotation.ColorInt
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import java.lang.Exception
 
 /*
  * Created by MyInnos on 31-01-2017.
  * Updated by AbandonedCart 07-2022.
- */   class IndexFastScrollRecyclerSection(
+ */
+class IndexFastScrollRecyclerSection(
     context: Context,
-    recyclerView: IndexFastScrollRecyclerView
+    recyclerView: IndexFastScrollRecyclerView,
 ) : RecyclerView.AdapterDataObserver() {
     private var mIndexBarWidth: Float
     private var mIndexBarMarginLeft: Float
@@ -65,18 +69,23 @@ import java.lang.Exception
     private var indexbarBackgroudAlpha: Int
     fun draw(canvas: Canvas) {
         if (setIndexBarVisibility) {
-            val indexbarPaint = Paint()
-            indexbarPaint.color = indexbarBackgroudColor
-            indexbarPaint.alpha = indexbarBackgroudAlpha
-            indexbarPaint.isAntiAlias = true
+            val indexbarPaint = Paint().apply {
+                color = indexbarBackgroudColor
+                alpha = indexbarBackgroudAlpha
+                isAntiAlias = true
+            }
             canvas.drawRoundRect(
-                mIndexbarRect!!, setIndexBarCornerRadius * mDensity,
-                setIndexBarCornerRadius * mDensity, indexbarPaint
+                mIndexbarRect!!,
+                setIndexBarCornerRadius * mDensity,
+                setIndexBarCornerRadius * mDensity,
+                indexbarPaint
             )
             if (setIndexBarStrokeVisibility) {
-                indexbarPaint.style = Paint.Style.STROKE
-                indexbarPaint.color = mIndexBarStrokeColor
-                indexbarPaint.strokeWidth = mIndexBarStrokeWidth.toFloat() // set stroke width
+                indexbarPaint.apply {
+                    style = Paint.Style.STROKE
+                    color = mIndexBarStrokeColor
+                    strokeWidth = mIndexBarStrokeWidth.toFloat() // set stroke width
+                }
                 canvas.drawRoundRect(
                     mIndexbarRect!!, setIndexBarCornerRadius * mDensity,
                     setIndexBarCornerRadius * mDensity, indexbarPaint
@@ -85,23 +94,23 @@ import java.lang.Exception
             if (mSections != null && mSections!!.size > 0) {
                 // Preview is shown when mCurrentSection is set
                 if (previewVisibility && mCurrentSection >= 0 && mSections!![mCurrentSection] != "") {
-                    val previewPaint = Paint()
-                    previewPaint.color = previewBackgroundColor
-                    previewPaint.alpha = previewBackgroudAlpha
-                    previewPaint.isAntiAlias = true
-                    previewPaint.setShadowLayer(
-                        3f, 0f, 0f,
-                        Color.argb(64, 0, 0, 0)
-                    )
-                    val previewTextPaint = Paint()
-                    previewTextPaint.color = previewTextColor
-                    previewTextPaint.isAntiAlias = true
-                    previewTextPaint.textSize = setPreviewTextSize * mScaledDensity
-                    previewTextPaint.typeface = setTypeface
-                    val previewTextWidth =
-                        previewTextPaint.measureText(mSections!![mCurrentSection])
-                    var previewSize =
-                        2 * mPreviewPadding + previewTextPaint.descent() - previewTextPaint.ascent()
+                    val previewPaint = Paint().apply {
+                        color = previewBackgroundColor
+                        alpha = previewBackgroudAlpha
+                        isAntiAlias = true
+                        setShadowLayer(
+                            3f, 0f, 0f,
+                            Color.argb(64, 0, 0, 0)
+                        )
+                    }
+                    val previewTextPaint = Paint().apply {
+                        color = previewTextColor
+                        isAntiAlias = true
+                        textSize = setPreviewTextSize * mScaledDensity
+                        typeface = setTypeface
+                    }
+                    val previewTextWidth = previewTextPaint.measureText(mSections!![mCurrentSection])
+                    var previewSize = 2 * mPreviewPadding + previewTextPaint.descent() - previewTextPaint.ascent()
                     previewSize = Math.max(previewSize, previewTextWidth + 2 * mPreviewPadding)
                     val previewRect = RectF(
                         (mListViewWidth - previewSize) / 2,
@@ -118,14 +127,15 @@ import java.lang.Exception
                     )
                     setPreviewFadeTimeout(300)
                 }
-                val indexPaint = Paint()
-                indexPaint.color = indexbarTextColor
-                indexPaint.isAntiAlias = true
-                indexPaint.textSize = setIndexTextSize * mScaledDensity
-                indexPaint.typeface = setTypeface
-                val sectionHeight =
-                    (mIndexbarRect!!.height() - mIndexBarMarginTop - mIndexBarMarginBottom) / mSections!!.size
-                val paddingTop = (sectionHeight - (indexPaint.descent() - indexPaint.ascent())) / 2
+                val indexPaint = Paint().apply {
+                    color = indexbarTextColor
+                    isAntiAlias = true
+                    textSize = setIndexTextSize * mScaledDensity
+                    typeface = setTypeface
+                }
+                val sectionHeight = (mIndexbarRect!!.height() - mIndexBarMarginTop - mIndexBarMarginBottom) / 27
+                val startPoint = (mIndexbarRect!!.height() / 2f) - (sectionHeight * (mSections!!.size / 2f))
+
                 for (i in mSections!!.indices) {
                     if (setSetIndexBarHighLightTextVisibility) {
                         if (mCurrentSection > -1 && i == mCurrentSection) {
@@ -137,26 +147,14 @@ import java.lang.Exception
                             indexPaint.textSize = setIndexTextSize * mScaledDensity
                             indexPaint.color = indexbarTextColor
                         }
-                        val paddingLeft = (mIndexBarWidth - indexPaint.measureText(
-                            mSections!![i]
-                        )) / 2
-                        canvas.drawText(
-                            mSections!![i],
-                            mIndexbarRect!!.left + paddingLeft,
-                            mIndexbarRect!!.top + mIndexBarMarginTop + sectionHeight * i + paddingTop - indexPaint.ascent(),
-                            indexPaint
-                        )
-                    } else {
-                        val paddingLeft = (mIndexBarWidth - indexPaint.measureText(
-                            mSections!![i]
-                        )) / 2
-                        canvas.drawText(
-                            mSections!![i],
-                            mIndexbarRect!!.left + paddingLeft,
-                            mIndexbarRect!!.top + mIndexBarMarginTop + sectionHeight * i + paddingTop - indexPaint.ascent(),
-                            indexPaint
-                        )
                     }
+                    val paddingLeft = (mIndexBarWidth - indexPaint.measureText(mSections!![i])) / 2
+                    canvas.drawText(
+                        mSections!![i],
+                        mIndexbarRect!!.left + paddingLeft,
+                        startPoint + mIndexBarMarginTop + sectionHeight * i - indexPaint.ascent(),
+                        indexPaint
+                    )
                 }
             }
         }
@@ -174,6 +172,7 @@ import java.lang.Exception
                     scrollToPosition()
                     return true
                 }
+
             MotionEvent.ACTION_MOVE -> if (mIsIndexing) {
                 // If this event moves inside index bar
                 if (contains(ev.x, ev.y)) {
@@ -183,6 +182,7 @@ import java.lang.Exception
                 }
                 return true
             }
+
             MotionEvent.ACTION_UP -> if (mIsIndexing) {
                 mIsIndexing = false
                 mCurrentSection = -1
@@ -208,9 +208,9 @@ import java.lang.Exception
         mListViewHeight = h
         mIndexbarRect = RectF(
             w - mIndexBarMarginLeft - mIndexBarWidth,
-            mIndexBarMarginTop,
+            0f,
             w - mIndexBarMarginRight,
-            h - mIndexBarMarginBottom - if (mRecyclerView!!.clipToPadding) 0 else mRecyclerView.paddingBottom
+            h.toFloat() - if (mRecyclerView!!.clipToPadding) 0 else mRecyclerView.paddingBottom
         )
     }
 
@@ -239,7 +239,15 @@ import java.lang.Exception
     private fun getSectionByPoint(y: Float): Int {
         if (mSections == null || mSections?.isEmpty() == true) return 0
         if (y < mIndexbarRect!!.top + mIndexBarMarginTop) return 0
-        return if (y >= mIndexbarRect!!.top + mIndexbarRect!!.height() - mIndexBarMarginTop) mSections!!.size - 1 else ((y - mIndexbarRect!!.top - mIndexBarMarginTop) / ((mIndexbarRect!!.height() - mIndexBarMarginBottom - mIndexBarMarginTop) / mSections!!.size)).toInt()
+
+        return if (y >= mIndexbarRect!!.top + mIndexbarRect!!.height() - mIndexBarMarginTop) {
+            mSections!!.size - 1
+        } else {
+            val sectionHeight = (mIndexbarRect!!.height() - mIndexBarMarginTop - mIndexBarMarginBottom) / 27
+            val startPoint = (mIndexbarRect!!.height() / 2f) - (sectionHeight * (mSections!!.size / 2f))
+
+            ((y - startPoint) / (sectionHeight)).toInt()
+        }
     }
 
     private var mLastFadeRunnable: Runnable? = null
