@@ -19,7 +19,7 @@ import kotlin.text.iterator
 class RecyclerViewAdapter(private val mDataArray: ArrayList<String>?) :
     RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>(), SectionIndexer {
 
-    private val mSections = "ABCDEFGHIJKLMNOPQRSTUVWXYZ#"
+    private val mSections = "ABCDE#"
     private var sectionsTranslator = HashMap<Int, Int>()
     private var mSectionPositions: ArrayList<Int>? = null
 

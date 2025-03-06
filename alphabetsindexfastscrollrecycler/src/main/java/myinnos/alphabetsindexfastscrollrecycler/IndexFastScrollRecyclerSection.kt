@@ -133,7 +133,7 @@ class IndexFastScrollRecyclerSection(
                     textSize = setIndexTextSize * mScaledDensity
                     typeface = setTypeface
                 }
-                val sectionHeight = (mIndexbarRect!!.height() - mIndexBarMarginTop - mIndexBarMarginBottom) / 27
+                val sectionHeight = (mIndexbarRect!!.height() * 0.66f) / 27f
                 val startPoint = (mIndexbarRect!!.height() / 2f) - (sectionHeight * (mSections!!.size / 2f))
 
                 for (i in mSections!!.indices) {
@@ -152,7 +152,7 @@ class IndexFastScrollRecyclerSection(
                     canvas.drawText(
                         mSections!![i],
                         mIndexbarRect!!.left + paddingLeft,
-                        startPoint + mIndexBarMarginTop + sectionHeight * i - indexPaint.ascent(),
+                        startPoint + sectionHeight * i - indexPaint.ascent(),
                         indexPaint
                     )
                 }
@@ -206,6 +206,7 @@ class IndexFastScrollRecyclerSection(
     fun onSizeChanged(w: Int, h: Int) {
         mListViewWidth = w
         mListViewHeight = h
+
         mIndexbarRect = RectF(
             w - mIndexBarMarginLeft - mIndexBarWidth,
             0f,
@@ -240,14 +241,17 @@ class IndexFastScrollRecyclerSection(
         if (mSections == null || mSections?.isEmpty() == true) return 0
         if (y < mIndexbarRect!!.top + mIndexBarMarginTop) return 0
 
-        return if (y >= mIndexbarRect!!.top + mIndexbarRect!!.height() - mIndexBarMarginTop) {
+        val section = if (y >= mIndexbarRect!!.top + mIndexbarRect!!.height() - mIndexBarMarginTop) {
             mSections!!.size - 1
         } else {
-            val sectionHeight = (mIndexbarRect!!.height() - mIndexBarMarginTop - mIndexBarMarginBottom) / 27
+            val sectionHeight = ((mIndexbarRect!!.height() * 0.66f) / 27f)
             val startPoint = (mIndexbarRect!!.height() / 2f) - (sectionHeight * (mSections!!.size / 2f))
 
             ((y - startPoint) / (sectionHeight)).toInt()
         }
+
+        return if (section >= mSections!!.size) mSections!!.size - 1
+        else section
     }
 
     private var mLastFadeRunnable: Runnable? = null
