@@ -7,6 +7,7 @@ import android.graphics.Paint
 import android.graphics.RectF
 import android.graphics.Typeface
 import android.util.Log
+import android.view.HapticFeedbackConstants
 import android.view.MotionEvent
 import android.widget.SectionIndexer
 import androidx.annotation.ColorInt
@@ -18,7 +19,7 @@ import androidx.recyclerview.widget.RecyclerView
  * Updated by AbandonedCart 07-2022.
  */
 class IndexFastScrollRecyclerSection(
-    context: Context,
+    private val context: Context,
     recyclerView: IndexFastScrollRecyclerView,
 ) : RecyclerView.AdapterDataObserver() {
     private var mIndexBarWidth: Float
@@ -194,10 +195,20 @@ class IndexFastScrollRecyclerSection(
     private fun scrollToPosition() {
         try {
             val position = mIndexer?.getPositionForSection(mCurrentSection)
+            val firstVisiblePosition = (mRecyclerView?.layoutManager as? LinearLayoutManager)?.findFirstVisibleItemPosition() ?: 0
+            val lastVisiblePosition = (mRecyclerView?.layoutManager as? LinearLayoutManager)?.findLastVisibleItemPosition() ?: 0
+
+            if (position == null || position < 0) return
+            if (position in firstVisiblePosition..lastVisiblePosition) return
+
+            mRecyclerView?.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
+
             val layoutManager = mRecyclerView!!.layoutManager
             if (layoutManager is LinearLayoutManager) {
-                position?.let { layoutManager.scrollToPositionWithOffset(it, 0) }
-            } else position?.let { layoutManager?.scrollToPosition(it) }
+                layoutManager.scrollToPositionWithOffset(position, 0)
+            } else {
+                layoutManager?.scrollToPosition(position)
+            }
         } catch (e: Exception) {
             Log.d("INDEX_BAR", "Data size returns null")
         }
