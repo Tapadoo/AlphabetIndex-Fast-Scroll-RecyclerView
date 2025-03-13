@@ -201,7 +201,7 @@ class IndexFastScrollRecyclerSection(
             if (position == null || position < 0) return
             if (position in firstVisiblePosition..lastVisiblePosition) return
 
-            mRecyclerView?.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
+            mRecyclerView?.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY, HapticFeedbackConstants.FLAG_IGNORE_VIEW_SETTING)
 
             val layoutManager = mRecyclerView!!.layoutManager
             if (layoutManager is LinearLayoutManager) {
